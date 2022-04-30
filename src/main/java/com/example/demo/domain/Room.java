@@ -1,18 +1,19 @@
 package com.example.demo.domain;
 
 import com.example.demo.enums.RoomType;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
+@Getter
 @Table
 @Entity
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@EqualsAndHashCode(of = {"id"})
 public class Room {
 
   @Id
@@ -24,4 +25,10 @@ public class Room {
 
   @Column(nullable = false)
   private RoomType type;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id", referencedColumnName = "id")
+  private User user;
+
+  @OneToMany private Set<Deal> dealSet = new HashSet<>();
 }

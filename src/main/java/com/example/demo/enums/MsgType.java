@@ -1,6 +1,8 @@
 package com.example.demo.enums;
 
 public enum MsgType implements BaseEnum<String> {
+  NotFoundBaseType("E003", "not found base type"),
+  NotFoundDealType("E002", "not found deal type"),
   NotFoundRoomType("E001", "not found room type");
 
   private final String code;

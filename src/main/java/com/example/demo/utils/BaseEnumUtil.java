@@ -1,6 +1,8 @@
 package com.example.demo.utils;
 
+import com.example.demo.config.exception.NotFoundException;
 import com.example.demo.enums.BaseEnum;
+import com.example.demo.enums.MsgType;
 
 public class BaseEnumUtil {
 
@@ -14,6 +16,7 @@ public class BaseEnumUtil {
         return baseEnum;
       }
     }
-    return null;
+
+    throw new NotFoundException(MsgType.NotFoundBaseType);
   }
 }
