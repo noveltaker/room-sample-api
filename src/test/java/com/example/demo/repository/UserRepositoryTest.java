@@ -31,4 +31,24 @@ class UserRepositoryTest {
     Assertions.assertEquals(entity.getEmail(), mock.getEmail());
     Assertions.assertEquals(entity.getPassword(), mock.getPassword());
   }
+
+  @Test
+  @DisplayName("중복 유저가 있을때")
+  void existsByEmail_ture() {
+
+    User mock = userRepository.saveAndFlush(UserMock.getMock());
+
+    boolean isUse = userRepository.existsByEmail(mock.getEmail());
+
+    Assertions.assertTrue(isUse);
+  }
+
+  @Test
+  @DisplayName("중복 유저가 없을 떄")
+  void existsByEmail_false() {
+
+    boolean isUse = userRepository.existsByEmail("test1");
+
+    Assertions.assertFalse(isUse);
+  }
 }
