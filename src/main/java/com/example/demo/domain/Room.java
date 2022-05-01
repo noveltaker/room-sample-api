@@ -30,7 +30,9 @@ public class Room {
   @JoinColumn(name = "user_id", referencedColumnName = "id")
   private User user;
 
-  @Builder.Default @OneToMany private Set<Deal> dealSet = new HashSet<>();
+  @Builder.Default
+  @OneToMany(cascade = {CascadeType.REMOVE})
+  private Set<Deal> dealSet = new HashSet<>();
 
   @Builder(builderMethodName = "initBuilder")
   private Room(String name, RoomType type, User user) {

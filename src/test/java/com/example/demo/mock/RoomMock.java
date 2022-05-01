@@ -23,6 +23,10 @@ public class RoomMock {
         .build();
   }
 
+  public static Room getMockNotDeal(User user) {
+    return Room.builder().id(id).type(default_room_type).name(name).user(user).build();
+  }
+
   public static RoomDTO getRoomDTO() {
     return RoomDTO.builder()
         .name(name)

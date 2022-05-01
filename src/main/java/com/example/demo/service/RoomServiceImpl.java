@@ -1,8 +1,10 @@
 package com.example.demo.service;
 
+import com.example.demo.config.exception.NotFoundException;
 import com.example.demo.domain.Deal;
 import com.example.demo.domain.Room;
 import com.example.demo.domain.User;
+import com.example.demo.enums.MsgType;
 import com.example.demo.repository.RoomRepository;
 import com.example.demo.service.dto.RoomDTO;
 import lombok.RequiredArgsConstructor;
@@ -33,5 +35,19 @@ public class RoomServiceImpl implements RoomService {
     room.initDealTypes(dealSet);
 
     return room;
+  }
+
+  @Override
+  @Transactional(rollbackFor = Exception.class)
+  public void removeOne(Long roomId) {
+    roomRepository.findById(roomId);
+  }
+
+  @Override
+  @Transactional(rollbackFor = Exception.class, readOnly = true)
+  public Room getOne(Long id) {
+    return roomRepository
+        .findById(id)
+        .orElseThrow(() -> new NotFoundException(MsgType.NotFoundRoom));
   }
 }

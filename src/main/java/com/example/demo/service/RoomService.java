@@ -8,4 +8,8 @@ public interface RoomService {
 
   // room 저장
   Room createRoom(RoomDTO dto, User user);
+
+  void removeOne(Long roomId);
+
+  Room getOne(Long id);
 }
