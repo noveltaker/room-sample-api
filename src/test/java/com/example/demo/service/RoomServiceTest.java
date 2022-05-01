@@ -5,7 +5,9 @@ import com.example.demo.domain.User;
 import com.example.demo.mock.RoomMock;
 import com.example.demo.mock.UserMock;
 import com.example.demo.repository.RoomRepository;
+import com.example.demo.service.dto.PageDTO;
 import com.example.demo.service.dto.RoomDTO;
+import com.example.demo.service.dto.RoomInfo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -17,10 +19,13 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+import org.springframework.data.domain.Page;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
@@ -80,5 +85,35 @@ class RoomServiceTest {
     Assertions.assertEquals(mock.getType(), entity.getType());
     Assertions.assertEquals(mock.getUser(), entity.getUser());
     Assertions.assertEquals(mock.getDealSet(), entity.getDealSet());
+  }
+
+  @Test
+  @DisplayName("나의 room 리스트업")
+  void getMyRoomList() {
+
+    Page<RoomInfo> mocks = RoomMock.getRoomInfo(UserMock.getMock());
+
+    BDDMockito.given(roomRepository.findByUser_Id(any(), any(), eq(RoomInfo.class)))
+        .willReturn(mocks);
+
+    PageDTO dto = RoomMock.getPageDTO();
+
+    Page<RoomInfo> entities = roomService.getMyRoomList(1L, dto);
+
+    List<RoomInfo> mockList = mocks.getContent();
+
+    List<RoomInfo> entityList = entities.getContent();
+
+    // size 체크
+    Assertions.assertEquals(mockList.size(), entityList.size());
+
+    RoomInfo mock = mockList.get(0);
+
+    RoomInfo entity = entityList.get(0);
+
+    Assertions.assertEquals(mock.getId(), entity.getId());
+    Assertions.assertEquals(mock.getName(), entity.getName());
+    Assertions.assertEquals(mock.getType(), entity.getType());
+    Assertions.assertEquals(mock.getDealSet().size(), entity.getDealSet().size());
   }
 }

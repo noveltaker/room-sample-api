@@ -4,6 +4,7 @@ import com.example.demo.domain.Deal;
 import com.example.demo.domain.DealKey;
 import com.example.demo.enums.DealType;
 import com.example.demo.service.dto.DealDTO;
+import com.example.demo.service.dto.DealInfo;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -39,5 +40,34 @@ public class DealMock {
             value ->
                 new DealDTO(value.getId().getType(), value.getMonthlyAmount(), value.getDeposit()))
         .collect(Collectors.toSet());
+  }
+
+  static class DealTempInfo implements DealInfo {
+
+    private final Deal deal;
+
+    public DealTempInfo(Deal deal) {
+      this.deal = deal;
+    }
+
+    @Override
+    public Long getRoomId() {
+      return deal.getId().getRoomId();
+    }
+
+    @Override
+    public DealType getType() {
+      return deal.getId().getType();
+    }
+
+    @Override
+    public Integer getMonthlyAmount() {
+      return deal.getMonthlyAmount();
+    }
+
+    @Override
+    public Integer getDeposit() {
+      return deal.getDeposit();
+    }
   }
 }

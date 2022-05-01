@@ -6,8 +6,11 @@ import com.example.demo.domain.Room;
 import com.example.demo.domain.User;
 import com.example.demo.enums.MsgType;
 import com.example.demo.repository.RoomRepository;
+import com.example.demo.service.dto.PageDTO;
 import com.example.demo.service.dto.RoomDTO;
+import com.example.demo.service.dto.RoomInfo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,5 +52,11 @@ public class RoomServiceImpl implements RoomService {
     return roomRepository
         .findById(id)
         .orElseThrow(() -> new NotFoundException(MsgType.NotFoundRoom));
+  }
+
+  @Override
+  @Transactional(rollbackFor = Exception.class, readOnly = true)
+  public Page<RoomInfo> getMyRoomList(Long userId, PageDTO dto) {
+    return roomRepository.findByUser_Id(userId, dto.getPageRequest(), RoomInfo.class);
   }
 }

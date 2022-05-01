@@ -4,12 +4,16 @@ import com.example.demo.domain.Room;
 import com.example.demo.domain.User;
 import com.example.demo.mock.RoomMock;
 import com.example.demo.mock.UserMock;
+import com.example.demo.service.dto.RoomInfo;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 @DataJpaTest
@@ -78,6 +82,7 @@ class RoomRepositoryTest {
   }
 
   @Nested
+  @DisplayName("조회")
   class Select {
 
     User user = null;
@@ -103,11 +108,32 @@ class RoomRepositoryTest {
 
       Room entity = entityOptional.get();
 
-      Assertions.assertEquals(mock.getId() , entity.getId());
-      Assertions.assertEquals(mock.getName() , entity.getName());
-      Assertions.assertEquals(mock.getType() , entity.getType());
-      Assertions.assertEquals(mock.getUser() , entity.getUser());
-      Assertions.assertEquals(mock.getDealSet() , entity.getDealSet());
+      Assertions.assertEquals(mock.getId(), entity.getId());
+      Assertions.assertEquals(mock.getName(), entity.getName());
+      Assertions.assertEquals(mock.getType(), entity.getType());
+      Assertions.assertEquals(mock.getUser(), entity.getUser());
+      Assertions.assertEquals(mock.getDealSet(), entity.getDealSet());
+    }
+
+    @Test
+    @DisplayName("나의 방 리스트 업")
+    void findByUser_Id() {
+
+      PageRequest page = PageRequest.of(0, 10);
+
+      Page<RoomInfo> pageList = roomRepository.findByUser_Id(user.getId(), page, RoomInfo.class);
+
+      List<RoomInfo> content = pageList.getContent();
+
+      // 하나의 데이터 체크
+      Assertions.assertEquals(content.size(), 1);
+
+      RoomInfo entity = content.get(0);
+
+      Assertions.assertEquals(mock.getId(), entity.getId());
+      Assertions.assertEquals(mock.getName(), entity.getName());
+      Assertions.assertEquals(mock.getType(), entity.getType());
+      Assertions.assertEquals(mock.getDealSet().size(), entity.getDealSet().size());
     }
   }
 }
