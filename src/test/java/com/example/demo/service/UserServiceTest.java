@@ -50,6 +50,9 @@ class UserServiceTest {
 
     User entity = userService.signUp(dto);
 
+    BDDMockito.then(userRepository).should().existsByEmail(any());
+    BDDMockito.then(userRepository).should().save(any());
+
     Assertions.assertEquals(mock.getEmail(), entity.getEmail());
     Assertions.assertEquals(mock.getPassword(), entity.getPassword());
   }
