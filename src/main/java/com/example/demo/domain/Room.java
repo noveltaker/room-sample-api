@@ -31,4 +31,16 @@ public class Room {
   private User user;
 
   @OneToMany private Set<Deal> dealSet = new HashSet<>();
+
+  @Builder(builderMethodName = "initBuilder")
+  private Room(String name, RoomType type, User user) {
+    this.name = name;
+    this.type = type;
+    this.user = user;
+  }
+
+  @Transient
+  public void initDealTypes(Set<Deal> dealSet) {
+    this.dealSet = dealSet;
+  }
 }
