@@ -5,7 +5,7 @@ import com.querydsl.core.BooleanBuilder;
 
 import static com.example.demo.domain.QDeal.deal;
 
-public final class DepositSearch extends AbstractSearch {
+public final class DepositSearch extends Search {
 
   DepositSearch(SearchDTO searchDTO) {
     super(searchDTO);

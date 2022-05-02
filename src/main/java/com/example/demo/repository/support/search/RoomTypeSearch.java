@@ -6,7 +6,7 @@ import com.querydsl.core.BooleanBuilder;
 
 import static com.example.demo.domain.QRoom.room;
 
-public final class RoomTypeSearch extends AbstractSearch {
+public final class RoomTypeSearch extends Search {
 
   RoomTypeSearch(SearchDTO dto) {
     super(dto);

@@ -9,7 +9,7 @@ import com.example.demo.enums.SearchType;
 import com.example.demo.mock.DealMock;
 import com.example.demo.mock.RoomMock;
 import com.example.demo.mock.UserMock;
-import com.example.demo.repository.support.search.SearchBuilder;
+import com.example.demo.repository.support.search.Search;
 import com.example.demo.repository.support.search.SearchFactory;
 import com.example.demo.service.dto.*;
 import org.junit.jupiter.api.*;
@@ -162,7 +162,7 @@ class RoomRepositoryTest {
 
       SearchDTO dto = SearchDTO.builder().roomType(RoomType.ONE).type(SearchType.ROOM).build();
 
-      SearchBuilder builder = new SearchFactory(dto).init();
+      SearchFactory builder = new SearchFactory(dto).init();
 
       Page<RoomInfoDTO> entities = roomRepository.findByAll(pageable, builder);
 
@@ -186,7 +186,7 @@ class RoomRepositoryTest {
       SearchDTO dto =
           SearchDTO.builder().dealType(DealType.CHARTER_RENT).type(SearchType.DEAL).build();
 
-      SearchBuilder builder = new SearchFactory(dto).init();
+      SearchFactory builder = new SearchFactory(dto).init();
 
       Page<RoomInfoDTO> entities = roomRepository.findByAll(pageable, builder);
 
@@ -211,7 +211,7 @@ class RoomRepositoryTest {
       SearchDTO dto =
           SearchDTO.builder().startDeposit(5000).endDeposit(5000).type(SearchType.DEPOSIT).build();
 
-      SearchBuilder builder = new SearchFactory(dto).init();
+      SearchFactory builder = new SearchFactory(dto).init();
 
       Page<RoomInfoDTO> entities = roomRepository.findByAll(pageable, builder);
 

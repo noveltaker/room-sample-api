@@ -6,11 +6,11 @@ import com.querydsl.core.BooleanBuilder;
 
 import java.util.Optional;
 
-public final class SearchFactory implements SearchBuilder {
+public final class SearchFactory {
 
   private final SearchDTO dto;
 
-  private SearchBuilder builder;
+  private Search search;
 
   public SearchFactory(SearchDTO dto) {
     this.dto = dto;
@@ -22,13 +22,13 @@ public final class SearchFactory implements SearchBuilder {
 
     switch (type) {
       case ROOM:
-        this.builder = new RoomTypeSearch(dto);
+        this.search = new RoomTypeSearch(dto);
         break;
       case DEAL:
-        this.builder = new DealTypeSearch(dto);
+        this.search = new DealTypeSearch(dto);
         break;
       case DEPOSIT:
-        this.builder = new DepositSearch(dto);
+        this.search = new DepositSearch(dto);
         break;
       default:
         break;
@@ -37,9 +37,8 @@ public final class SearchFactory implements SearchBuilder {
     return this;
   }
 
-  @Override
   public BooleanBuilder getSearch() {
-    if (builder == null) return new BooleanBuilder();
-    return this.builder.getSearch();
+    if (search == null) return new BooleanBuilder();
+    return this.search.getSearch();
   }
 }
