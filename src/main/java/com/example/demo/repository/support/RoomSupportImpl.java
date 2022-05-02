@@ -1,7 +1,6 @@
 package com.example.demo.repository.support;
 
 import com.example.demo.domain.Room;
-import com.example.demo.repository.support.search.Search;
 import com.example.demo.repository.support.search.SearchFactory;
 import com.example.demo.service.dto.DealInfoDTO;
 import com.example.demo.service.dto.RoomInfoDTO;
