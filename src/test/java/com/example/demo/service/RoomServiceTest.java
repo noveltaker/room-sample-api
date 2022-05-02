@@ -116,4 +116,39 @@ class RoomServiceTest {
     Assertions.assertEquals(mock.getType(), entity.getType());
     Assertions.assertEquals(mock.getDealSet().size(), entity.getDealSet().size());
   }
+
+  @Test
+  void removeOne() {
+
+    Long id = 1L;
+
+    BDDMockito.willDoNothing().given(roomRepository).deleteById(any());
+
+    roomService.removeOne(id);
+
+    BDDMockito.then(roomRepository).should().deleteById(any());
+  }
+
+  @Test
+  void updateOne() {
+
+    Long mockId = 1L;
+
+    RoomDTO dto = RoomMock.getRoomDTO();
+
+    Optional<Room> roomOptional = Optional.of(RoomMock.getMock(UserMock.getMock()));
+
+    BDDMockito.given(roomRepository.findById(any())).willReturn(roomOptional);
+
+    Room mock = roomOptional.get();
+
+    Room entity = roomService.updateOne(mockId, dto);
+
+    BDDMockito.then(roomRepository).should().findById(any());
+
+    Assertions.assertEquals(mock.getId(), entity.getId());
+    Assertions.assertEquals(mock.getName(), entity.getName());
+    Assertions.assertEquals(mock.getType(), entity.getType());
+    Assertions.assertEquals(mock.getDealSet().size(), entity.getDealSet().size());
+  }
 }

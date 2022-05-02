@@ -2,8 +2,10 @@ package com.example.demo.repository;
 
 import com.example.demo.domain.Room;
 import com.example.demo.domain.User;
+import com.example.demo.mock.DealMock;
 import com.example.demo.mock.RoomMock;
 import com.example.demo.mock.UserMock;
+import com.example.demo.service.dto.RoomDTO;
 import com.example.demo.service.dto.RoomInfo;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,9 +40,15 @@ class RoomRepositoryTest {
     @DisplayName("내방 저장 로직")
     void save() {
 
-      Room mock = RoomMock.getMock(user);
+      Room mock = RoomMock.getMockNotDeal(user);
 
       Room entity = roomRepository.save(mock);
+
+      entity.initDealTypes(DealMock.getMocks(entity.getId(), entity));
+
+      mock.initDealTypes(DealMock.getMocks(entity.getId(), entity));
+
+      roomRepository.flush();
 
       org.assertj.core.api.Assertions.assertThat(mock).isEqualTo(entity);
 
@@ -134,6 +142,42 @@ class RoomRepositoryTest {
       Assertions.assertEquals(mock.getName(), entity.getName());
       Assertions.assertEquals(mock.getType(), entity.getType());
       Assertions.assertEquals(mock.getDealSet().size(), entity.getDealSet().size());
+    }
+  }
+
+  @Nested
+  class Update {
+
+    User user = null;
+
+    Room mock = null;
+
+    @BeforeEach
+    void init() {
+      user = userRepository.saveAndFlush(UserMock.getMock());
+
+      mock = roomRepository.save(RoomMock.getMockNotDeal(user));
+
+      roomRepository.flush();
+    }
+
+    @Test
+    @DisplayName("업데이트 & update 메소드 테스트 케이스")
+    void update() {
+
+      RoomDTO mock1 = RoomMock.getUpdateDTO();
+
+      Room update = roomRepository.findById(mock.getId()).orElseThrow();
+
+      update.update(mock1);
+
+      roomRepository.flush();
+
+      Room entity = roomRepository.findById(mock.getId()).orElseThrow();
+
+      Assertions.assertEquals(entity.getName(), mock1.getName());
+      Assertions.assertEquals(entity.getType(), mock1.getType());
+      Assertions.assertEquals(entity.getDealSet().size(), mock1.getDealSet().size());
     }
   }
 }

@@ -16,11 +16,15 @@ public class Deal {
 
   @EmbeddedId private DealKey id;
 
-  @Column(nullable = false)
-  private Integer monthlyAmount;
+  @Column private Integer monthlyAmount;
 
   @Column(nullable = false)
   private Integer deposit;
+
+  @MapsId("roomId")
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "room_id", referencedColumnName = "id", insertable = false, updatable = false)
+  private Room room;
 
   @PrePersist
   void prePersist() {

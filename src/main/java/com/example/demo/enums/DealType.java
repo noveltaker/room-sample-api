@@ -1,6 +1,7 @@
 package com.example.demo.enums;
 
 public enum DealType implements BaseEnum<String> {
+  ALL("all"),
   MONTHLY_RENT("monthly"),
   CHARTER_RENT("charter");
 

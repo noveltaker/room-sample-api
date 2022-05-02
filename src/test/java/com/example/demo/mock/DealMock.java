@@ -2,6 +2,7 @@ package com.example.demo.mock;
 
 import com.example.demo.domain.Deal;
 import com.example.demo.domain.DealKey;
+import com.example.demo.domain.Room;
 import com.example.demo.enums.DealType;
 import com.example.demo.service.dto.DealDTO;
 import com.example.demo.service.dto.DealInfo;
@@ -34,12 +35,38 @@ public class DealMock {
     return set;
   }
 
+  public static Set<Deal> getMocks(Long roomId, Room room) {
+
+    HashSet<Deal> set = new HashSet<>();
+
+    set.add(
+        Deal.builder()
+            .id(new DealKey(roomId, DealType.MONTHLY_RENT))
+            .deposit(1000)
+            .monthlyAmount(50)
+            .room(room)
+            .build());
+
+    set.add(
+        Deal.builder()
+            .id(new DealKey(roomId, DealType.CHARTER_RENT))
+            .deposit(5000)
+            .room(room)
+            .build());
+
+    return set;
+  }
+
   public static Set<DealDTO> createDealDtoSet() {
     return getMocks().stream()
         .map(
             value ->
                 new DealDTO(value.getId().getType(), value.getMonthlyAmount(), value.getDeposit()))
         .collect(Collectors.toSet());
+  }
+
+  public static Set<DealDTO> createDealDtoSingle() {
+    return Set.of(new DealDTO(DealType.MONTHLY_RENT, 50, 100));
   }
 
   static class DealTempInfo implements DealInfo {

@@ -94,4 +94,12 @@ public class RoomMock {
   public static PageDTO getPageDTO() {
     return PageDTO.builder().page(0).size(10).build();
   }
+
+  public static RoomDTO getUpdateDTO() {
+    return RoomDTO.builder()
+        .name("업데이트")
+        .type(RoomType.THREE)
+        .dealSet(DealMock.createDealDtoSingle())
+        .build();
+  }
 }

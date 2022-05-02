@@ -33,7 +33,7 @@ public class RoomServiceImpl implements RoomService {
     roomRepository.save(room);
 
     // 거래 유형 set 데이터
-    Set<Deal> dealSet = dto.toDealSet(room.getId());
+    Set<Deal> dealSet = dto.toDealSet(room.getId(), room);
 
     room.initDealTypes(dealSet);
 
@@ -43,7 +43,7 @@ public class RoomServiceImpl implements RoomService {
   @Override
   @Transactional(rollbackFor = Exception.class)
   public void removeOne(Long roomId) {
-    roomRepository.findById(roomId);
+    roomRepository.deleteById(roomId);
   }
 
   @Override
@@ -58,5 +58,17 @@ public class RoomServiceImpl implements RoomService {
   @Transactional(rollbackFor = Exception.class, readOnly = true)
   public Page<RoomInfo> getMyRoomList(Long userId, PageDTO dto) {
     return roomRepository.findByUser_Id(userId, dto.getPageRequest(), RoomInfo.class);
+  }
+
+  @Override
+  @Transactional(rollbackFor = Exception.class)
+  public Room updateOne(Long id, RoomDTO dto) {
+
+    Room entity =
+        roomRepository.findById(id).orElseThrow(() -> new NotFoundException(MsgType.NotFoundRoom));
+
+    entity.update(dto);
+
+    return entity;
   }
 }

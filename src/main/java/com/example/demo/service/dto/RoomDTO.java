@@ -27,7 +27,9 @@ public class RoomDTO {
     return Room.initBuilder().name(this.name).type(this.type).user(user).build();
   }
 
-  public Set<Deal> toDealSet(Long id) {
-    return dealSet.stream().map((dealDto) -> dealDto.toEntity(id)).collect(Collectors.toSet());
+  public Set<Deal> toDealSet(Long id, Room room) {
+    return dealSet.stream()
+        .map((dealDto) -> dealDto.toEntity(id, room))
+        .collect(Collectors.toSet());
   }
 }

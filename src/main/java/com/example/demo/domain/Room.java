@@ -1,6 +1,7 @@
 package com.example.demo.domain;
 
 import com.example.demo.enums.RoomType;
+import com.example.demo.service.dto.RoomDTO;
 import lombok.*;
 
 import javax.persistence.*;
@@ -30,8 +31,11 @@ public class Room {
   @JoinColumn(name = "user_id", referencedColumnName = "id")
   private User user;
 
+  @MapKey(name = "id")
   @Builder.Default
-  @OneToMany(cascade = {CascadeType.REMOVE})
+  @OneToMany(
+      cascade = {CascadeType.REMOVE, CascadeType.PERSIST},
+      mappedBy = "room")
   private Set<Deal> dealSet = new HashSet<>();
 
   @Builder(builderMethodName = "initBuilder")
@@ -44,5 +48,12 @@ public class Room {
   @Transient
   public void initDealTypes(Set<Deal> dealSet) {
     this.dealSet = dealSet;
+  }
+
+  @Transient
+  public void update(RoomDTO dto) {
+    this.name = dto.getName();
+    this.type = dto.getType();
+    this.dealSet = dto.toDealSet(this.id, this);
   }
 }

@@ -1,6 +1,7 @@
 package com.example.demo.enums;
 
 public enum RoomType implements BaseEnum<String> {
+  ALL("all"),
   ONE("one"),
   TWE("twe"),
   THREE("three"),
