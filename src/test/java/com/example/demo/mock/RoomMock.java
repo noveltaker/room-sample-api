@@ -92,7 +92,7 @@ public class RoomMock {
   }
 
   public static PageDTO getPageDTO() {
-    return PageDTO.builder().page(0).size(10).build();
+    return new PageDTO(0 , 10);
   }
 
   public static RoomDTO getUpdateDTO() {

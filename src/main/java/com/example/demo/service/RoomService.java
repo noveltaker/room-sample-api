@@ -2,9 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.domain.Room;
 import com.example.demo.domain.User;
-import com.example.demo.service.dto.PageDTO;
-import com.example.demo.service.dto.RoomDTO;
-import com.example.demo.service.dto.RoomInfo;
+import com.example.demo.service.dto.*;
 import org.springframework.data.domain.Page;
 
 public interface RoomService {
@@ -23,4 +21,7 @@ public interface RoomService {
 
   // 나의 room 수정
   Room updateOne(Long id, RoomDTO dto);
+
+  // 전체 방 목록
+  Page<RoomInfoDTO> getAllRoomList(SearchDTO dto);
 }
