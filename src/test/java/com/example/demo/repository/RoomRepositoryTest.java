@@ -1,16 +1,21 @@
 package com.example.demo.repository;
 
+import com.example.demo.config.QueryDslConfiguration;
 import com.example.demo.domain.Room;
 import com.example.demo.domain.User;
+import com.example.demo.enums.RoomType;
+import com.example.demo.enums.SearchType;
 import com.example.demo.mock.DealMock;
 import com.example.demo.mock.RoomMock;
 import com.example.demo.mock.UserMock;
-import com.example.demo.service.dto.RoomDTO;
-import com.example.demo.service.dto.RoomInfo;
+import com.example.demo.repository.support.search.SearchBuilder;
+import com.example.demo.repository.support.search.SearchFactory;
+import com.example.demo.service.dto.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -20,6 +25,7 @@ import java.util.Optional;
 
 @DataJpaTest
 @ExtendWith(SpringExtension.class)
+@Import(QueryDslConfiguration.class)
 class RoomRepositoryTest {
 
   @Autowired private RoomRepository roomRepository;
@@ -77,6 +83,7 @@ class RoomRepositoryTest {
     }
 
     @Test
+    @DisplayName("하나삭제")
     void deleteId() {
 
       roomRepository.deleteById(room.getId());
@@ -102,6 +109,8 @@ class RoomRepositoryTest {
       user = userRepository.saveAndFlush(UserMock.getMock());
 
       mock = roomRepository.save(RoomMock.getMockNotDeal(user));
+
+      mock.initDealTypes(DealMock.getMocks(mock.getId(), mock));
 
       roomRepository.flush();
     }
@@ -142,6 +151,18 @@ class RoomRepositoryTest {
       Assertions.assertEquals(mock.getName(), entity.getName());
       Assertions.assertEquals(mock.getType(), entity.getType());
       Assertions.assertEquals(mock.getDealSet().size(), entity.getDealSet().size());
+    }
+
+    @Test
+    void findByAll_RoomType() {
+
+      PageRequest pageable = PageRequest.of(0, 10);
+
+      SearchDTO dto = SearchDTO.builder().roomType(RoomType.ONE).type(SearchType.ROOM).build();
+
+      SearchBuilder builder = new SearchFactory(dto).init();
+
+      Page<RoomInfoDTO> entities = roomRepository.findByAll(pageable, builder);
     }
   }
 

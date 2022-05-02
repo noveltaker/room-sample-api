@@ -4,9 +4,11 @@ import com.example.demo.enums.DealType;
 import com.example.demo.enums.RoomType;
 import com.example.demo.enums.SearchType;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@Builder
 @AllArgsConstructor
 public class SearchDTO {
 

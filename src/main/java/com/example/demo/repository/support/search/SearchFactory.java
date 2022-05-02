@@ -10,31 +10,36 @@ public final class SearchFactory implements SearchBuilder {
 
   private final SearchDTO dto;
 
+  private SearchBuilder builder;
+
   public SearchFactory(SearchDTO dto) {
     this.dto = dto;
   }
 
-  @Override
-  public BooleanBuilder getSearch() {
+  public SearchFactory init() {
 
     SearchType type = Optional.ofNullable(dto.getType()).orElse(SearchType.NONE);
 
-    SearchBuilder searchBuilder = null;
-
     switch (type) {
       case ROOM:
-        searchBuilder = new RoomTypeSearch(dto);
+        this.builder = new RoomTypeSearch(dto);
         break;
       case DEAL:
-        searchBuilder = new DealTypeSearch(dto);
+        this.builder = new DealTypeSearch(dto);
         break;
       case DEPOSIT:
-        searchBuilder = new DepositSearch(dto);
+        this.builder = new DepositSearch(dto);
         break;
       default:
         break;
     }
 
-    return searchBuilder.getSearch();
+    return this;
+  }
+
+  @Override
+  public BooleanBuilder getSearch() {
+    if (builder == null) return new BooleanBuilder();
+    return this.builder.getSearch();
   }
 }

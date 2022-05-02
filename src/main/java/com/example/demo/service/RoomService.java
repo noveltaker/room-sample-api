@@ -21,6 +21,6 @@ public interface RoomService {
   // 나의 room 데이터 리스트 업
   Page<RoomInfo> getMyRoomList(Long userId, PageDTO dto);
 
-  //
+  // 나의 room 수정
   Room updateOne(Long id, RoomDTO dto);
 }

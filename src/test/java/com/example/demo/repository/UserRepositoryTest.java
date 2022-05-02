@@ -1,5 +1,6 @@
 package com.example.demo.repository;
 
+import com.example.demo.config.QueryDslConfiguration;
 import com.example.demo.domain.User;
 import com.example.demo.mock.UserMock;
 import org.junit.jupiter.api.Assertions;
@@ -8,12 +9,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @ExtendWith(SpringExtension.class)
+@Import(QueryDslConfiguration.class)
 class UserRepositoryTest {
 
   @Autowired private UserRepository userRepository;
