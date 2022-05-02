@@ -1,4 +1,4 @@
-package com.example.demo.enums.converter;
+package com.example.demo.converter;
 
 import com.example.demo.config.exception.NotFoundException;
 import com.example.demo.enums.MsgType;
