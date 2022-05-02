@@ -16,8 +16,10 @@ public class Deal {
 
   @EmbeddedId private DealKey id;
 
+  // 월세
   @Column private Integer monthlyAmount;
 
+  // 보증금
   @Column(nullable = false)
   private Integer deposit;
 

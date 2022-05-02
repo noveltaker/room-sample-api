@@ -42,7 +42,7 @@ public class DealMock {
     set.add(
         Deal.builder()
             .id(new DealKey(roomId, DealType.MONTHLY_RENT))
-            .deposit(1000)
+            .deposit(5000)
             .monthlyAmount(50)
             .room(room)
             .build());

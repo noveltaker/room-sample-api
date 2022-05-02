@@ -3,6 +3,7 @@ package com.example.demo.repository;
 import com.example.demo.config.QueryDslConfiguration;
 import com.example.demo.domain.Room;
 import com.example.demo.domain.User;
+import com.example.demo.enums.DealType;
 import com.example.demo.enums.RoomType;
 import com.example.demo.enums.SearchType;
 import com.example.demo.mock.DealMock;
@@ -154,6 +155,7 @@ class RoomRepositoryTest {
     }
 
     @Test
+    @DisplayName("검색 방 유형 테스트 케이스")
     void findByAll_RoomType() {
 
       PageRequest pageable = PageRequest.of(0, 10);
@@ -163,6 +165,66 @@ class RoomRepositoryTest {
       SearchBuilder builder = new SearchFactory(dto).init();
 
       Page<RoomInfoDTO> entities = roomRepository.findByAll(pageable, builder);
+
+      List<RoomInfoDTO> content = entities.getContent();
+
+      Assertions.assertEquals(content.size(), 1);
+
+      RoomInfoDTO entity = content.get(0);
+
+      Assertions.assertEquals(mock.getId(), entity.getId());
+      Assertions.assertEquals(mock.getName(), entity.getName());
+      Assertions.assertEquals(mock.getType(), entity.getType());
+      Assertions.assertEquals(mock.getDealSet().size(), entity.getDealList().size());
+    }
+
+    @Test
+    @DisplayName("검색 거래 유형 테스트 케이스")
+    void findByAll_DealType() {
+      PageRequest pageable = PageRequest.of(0, 10);
+
+      SearchDTO dto =
+          SearchDTO.builder().dealType(DealType.CHARTER_RENT).type(SearchType.DEAL).build();
+
+      SearchBuilder builder = new SearchFactory(dto).init();
+
+      Page<RoomInfoDTO> entities = roomRepository.findByAll(pageable, builder);
+
+      List<RoomInfoDTO> content = entities.getContent();
+
+      Assertions.assertEquals(content.size(), 1);
+
+      RoomInfoDTO entity = content.get(0);
+
+      Assertions.assertEquals(mock.getId(), entity.getId());
+      Assertions.assertEquals(mock.getName(), entity.getName());
+      Assertions.assertEquals(mock.getType(), entity.getType());
+      // 하나 Mock 데이터 충족한지
+      Assertions.assertEquals(1, entity.getDealList().size());
+    }
+
+    @Test
+    @DisplayName("검색 가격범위 테스트 케이스")
+    void findByAll_Deposit() {
+      PageRequest pageable = PageRequest.of(0, 10);
+
+      SearchDTO dto =
+          SearchDTO.builder().startDeposit(5000).endDeposit(5000).type(SearchType.DEPOSIT).build();
+
+      SearchBuilder builder = new SearchFactory(dto).init();
+
+      Page<RoomInfoDTO> entities = roomRepository.findByAll(pageable, builder);
+
+      List<RoomInfoDTO> content = entities.getContent();
+
+      Assertions.assertEquals(content.size(), 1);
+
+      RoomInfoDTO entity = content.get(0);
+
+      Assertions.assertEquals(mock.getId(), entity.getId());
+      Assertions.assertEquals(mock.getName(), entity.getName());
+      Assertions.assertEquals(mock.getType(), entity.getType());
+      Assertions.assertEquals(mock.getDealSet().size(), entity.getDealList().size());
     }
   }
 

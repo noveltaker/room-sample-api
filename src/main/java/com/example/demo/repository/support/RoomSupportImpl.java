@@ -36,7 +36,11 @@ public class RoomSupportImpl extends QuerydslRepositorySupport implements RoomSu
   public Page<RoomInfoDTO> findByAll(Pageable pageable, SearchBuilder builder) {
 
     JPAQuery<Room> query =
-        jpaQueryFactory.selectFrom(room).innerJoin(room.user, user).leftJoin(room.dealSet, deal);
+        jpaQueryFactory
+            .selectFrom(room)
+            .innerJoin(room.user, user)
+            .leftJoin(room.dealSet, deal)
+            .where(builder.getSearch());
 
     List<RoomInfoDTO> result =
         query
