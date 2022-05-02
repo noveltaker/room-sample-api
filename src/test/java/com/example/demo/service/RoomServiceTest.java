@@ -43,7 +43,7 @@ class RoomServiceTest {
   }
 
   @Test
-  @DisplayName("room 데이터 저장")
+  @DisplayName("방 데이터 저장")
   void createRoom() {
 
     User user = UserMock.getMock();
@@ -64,7 +64,7 @@ class RoomServiceTest {
   }
 
   @Test
-  @DisplayName("room 하나 가지고 오기")
+  @DisplayName("하나 방 가지고 오기")
   void getOne() {
 
     Long roomId = 1L;
@@ -89,7 +89,7 @@ class RoomServiceTest {
   }
 
   @Test
-  @DisplayName("나의 room 리스트업")
+  @DisplayName("나의 방 리스트업")
   void getMyRoomList() {
 
     Page<RoomInfo> mocks = RoomMock.getRoomInfo(UserMock.getMock());
