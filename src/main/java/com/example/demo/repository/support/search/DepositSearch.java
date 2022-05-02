@@ -18,9 +18,6 @@ public final class DepositSearch extends AbstractSearch {
 
     SearchDTO dto = getSearchDTO();
 
-    //
-    // builder.and(deal.deposit.goe(dto.getStartDeposit()).and(deal.deposit.loe(dto.getEndDeposit())));
-
     builder.and(deal.deposit.between(dto.getStartDeposit(), dto.getEndDeposit()));
 
     return builder;
