@@ -138,6 +138,7 @@ class RoomServiceTest {
   }
 
   @Test
+  @DisplayName("방 데이터 수정")
   void updateOne() {
 
     Long mockId = 1L;
