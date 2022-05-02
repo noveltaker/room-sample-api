@@ -1,6 +1,8 @@
 package com.example.demo.enums;
 
 public enum MsgType implements BaseEnum<String> {
+
+  EmptyDealSet("E006" , "empty deal set"),
   NotFoundRoom("E005", "not found room data"),
   ReadyEmail("E004", "email is use "),
   NotFoundBaseType("E003", "not found base type"),

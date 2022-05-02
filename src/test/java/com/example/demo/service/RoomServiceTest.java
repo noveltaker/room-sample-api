@@ -16,6 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.internal.InOrderImpl;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
@@ -118,13 +119,20 @@ class RoomServiceTest {
   }
 
   @Test
+  @DisplayName("하나의 방 삭제")
   void removeOne() {
 
     Long id = 1L;
 
+    Boolean isMock = Boolean.TRUE;
+
+    BDDMockito.given(roomRepository.existsById(any())).willReturn(isMock);
+
     BDDMockito.willDoNothing().given(roomRepository).deleteById(any());
 
     roomService.removeOne(id);
+
+    BDDMockito.then(roomRepository).should().existsById(any());
 
     BDDMockito.then(roomRepository).should().deleteById(any());
   }

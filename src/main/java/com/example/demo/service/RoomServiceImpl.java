@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.config.exception.EmptyDealListException;
 import com.example.demo.config.exception.NotFoundException;
 import com.example.demo.domain.Deal;
 import com.example.demo.domain.Room;
@@ -35,6 +36,11 @@ public class RoomServiceImpl implements RoomService {
     // 거래 유형 set 데이터
     Set<Deal> dealSet = dto.toDealSet(room.getId(), room);
 
+    // 방의 거래 유형 체크
+    if (dealSet.isEmpty()) {
+      throw new EmptyDealListException();
+    }
+
     room.initDealTypes(dealSet);
 
     return room;
@@ -43,6 +49,12 @@ public class RoomServiceImpl implements RoomService {
   @Override
   @Transactional(rollbackFor = Exception.class)
   public void removeOne(Long roomId) {
+
+    // room 데이터 유무 체크
+    if (!roomRepository.existsById(roomId)) {
+      throw new NotFoundException(MsgType.NotFoundRoom);
+    }
+
     roomRepository.deleteById(roomId);
   }
 
