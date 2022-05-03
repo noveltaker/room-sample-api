@@ -1,5 +1,6 @@
 package com.example.demo.repository.support.search;
 
+import com.example.demo.config.exception.BigStartDepositException;
 import com.example.demo.service.dto.SearchDTO;
 import com.querydsl.core.BooleanBuilder;
 
@@ -17,6 +18,10 @@ public final class DepositSearch extends Search {
     BooleanBuilder builder = new BooleanBuilder();
 
     SearchDTO dto = getSearchDTO();
+
+    if (dto.getStartDeposit() > dto.getEndDeposit()) {
+      throw new BigStartDepositException();
+    }
 
     builder.and(deal.deposit.between(dto.getStartDeposit(), dto.getEndDeposit()));
 

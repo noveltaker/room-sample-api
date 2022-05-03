@@ -4,19 +4,22 @@ import com.example.demo.config.exception.NotFoundException;
 import com.example.demo.enums.MsgType;
 import com.example.demo.enums.RoomType;
 import com.example.demo.utils.BaseEnumUtil;
+import org.apache.commons.lang3.ObjectUtils;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
-import java.util.Optional;
 
 @Converter(autoApply = true)
 public class RoomTypeConverter implements AttributeConverter<RoomType, String> {
 
   @Override
   public String convertToDatabaseColumn(RoomType attribute) {
-    return Optional.ofNullable(attribute)
-        .orElseThrow(() -> new NotFoundException(MsgType.NotFoundRoomType))
-        .getValue();
+
+    if (ObjectUtils.isEmpty(attribute) || RoomType.ALL.equals(attribute)){
+      throw new NotFoundException(MsgType.NotFoundRoomType);
+    }
+
+    return attribute.getValue();
   }
 
   @Override

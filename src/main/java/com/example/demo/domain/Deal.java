@@ -2,6 +2,7 @@ package com.example.demo.domain;
 
 import com.example.demo.enums.DealType;
 import lombok.*;
+import org.apache.commons.lang3.ObjectUtils;
 
 import javax.persistence.*;
 
@@ -30,14 +31,7 @@ public class Deal {
 
   @PrePersist
   void prePersist() {
-    if (deposit == null) this.deposit = 0;
+    if (ObjectUtils.isEmpty(deposit)) this.deposit = 0;
     if (DealType.CHARTER_RENT.equals(id.getType())) this.monthlyAmount = null;
-  }
-
-  @Builder(builderMethodName = "initBuilder")
-  private Deal(Long roomId, DealType type, Integer monthlyAmount, Integer deposit) {
-    this.id = new DealKey(roomId, type);
-    this.monthlyAmount = monthlyAmount;
-    this.deposit = deposit;
   }
 }

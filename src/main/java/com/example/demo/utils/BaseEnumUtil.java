@@ -4,17 +4,25 @@ import com.example.demo.config.exception.NotFoundException;
 import com.example.demo.enums.BaseEnum;
 import com.example.demo.enums.MsgType;
 
-public class BaseEnumUtil {
+public final class BaseEnumUtil {
 
-  public static BaseEnum foundOf(Class<? extends BaseEnum> type, String str) {
+  private BaseEnumUtil() {}
 
-    BaseEnum[] enumConstants = (BaseEnum[]) type.getEnumConstants();
+  public static BaseEnum<?> foundOf(Class<? extends BaseEnum<?>> type, String str) {
 
-    for (BaseEnum baseEnum : enumConstants) {
+    try {
 
-      if (baseEnum.getValue().equals(str)) {
-        return baseEnum;
+      BaseEnum<?>[] enumConstants = (BaseEnum<?>[]) type.getEnumConstants();
+
+      for (BaseEnum<?> baseEnum : enumConstants) {
+
+        if (baseEnum.getValue().equals(str)) {
+          return baseEnum;
+        }
       }
+
+    } catch (Exception e) {
+      throw new NotFoundException(MsgType.BaseTypeError);
     }
 
     throw new NotFoundException(MsgType.NotFoundBaseType);

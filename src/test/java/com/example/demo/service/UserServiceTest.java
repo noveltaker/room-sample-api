@@ -15,9 +15,8 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
@@ -28,10 +27,12 @@ class UserServiceTest {
 
   @Mock private UserRepository userRepository;
 
+  private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
   @BeforeEach
   void init() {
     MockitoAnnotations.openMocks(this);
-    userService = new UserServiceImpl(userRepository);
+    userService = new UserServiceImpl(userRepository, passwordEncoder);
   }
 
   @Test
@@ -51,9 +52,11 @@ class UserServiceTest {
     User entity = userService.signUp(dto);
 
     BDDMockito.then(userRepository).should().existsByEmail(any());
+
     BDDMockito.then(userRepository).should().save(any());
 
     Assertions.assertEquals(mock.getEmail(), entity.getEmail());
-    Assertions.assertEquals(mock.getPassword(), entity.getPassword());
+
+    Assertions.assertTrue(passwordEncoder.matches(mock.getPassword(), entity.getPassword()));
   }
 }

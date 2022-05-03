@@ -3,10 +3,7 @@ package com.example.demo.mock;
 import com.example.demo.domain.Room;
 import com.example.demo.domain.User;
 import com.example.demo.enums.RoomType;
-import com.example.demo.service.dto.DealInfo;
-import com.example.demo.service.dto.PageDTO;
-import com.example.demo.service.dto.RoomDTO;
-import com.example.demo.service.dto.RoomInfo;
+import com.example.demo.service.dto.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -92,7 +89,7 @@ public class RoomMock {
   }
 
   public static PageDTO getPageDTO() {
-    return new PageDTO(0 , 10);
+    return new PageDTO(0, 10);
   }
 
   public static RoomDTO getUpdateDTO() {
@@ -101,5 +98,31 @@ public class RoomMock {
         .type(RoomType.THREE)
         .dealSet(DealMock.createDealDtoSingle())
         .build();
+  }
+
+  public static PageImpl<RoomInfoDTO> getPageMocks() {
+
+    Room mock = getMock(UserMock.getMock());
+
+    List<DealInfoDTO> mockDealList =
+        mock.getDealSet().stream()
+            .map(
+                deal ->
+                    new DealInfoDTO(
+                        deal.getId().getType(), deal.getMonthlyAmount(), deal.getDeposit()))
+            .collect(Collectors.toList());
+
+    List<RoomInfoDTO> list =
+        List.of(
+            new RoomInfoDTO(
+                mock.getId(),
+                mock.getName(),
+                mock.getType(),
+                mock.getUser().getEmail(),
+                mockDealList));
+
+    Pageable pageable = pageable();
+
+    return new PageImpl<>(list, pageable, list.size());
   }
 }

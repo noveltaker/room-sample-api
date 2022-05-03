@@ -5,6 +5,7 @@ import com.example.demo.domain.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService {
 
   private final UserRepository userRepository;
+
+  private final PasswordEncoder passwordEncoder;
 
   @Override
   @Transactional(rollbackFor = Exception.class)
@@ -24,6 +27,8 @@ public class UserServiceImpl implements UserService {
     }
 
     User entity = dto.toEntity();
+
+    entity.encodePassword(passwordEncoder.encode(entity.getPassword()));
 
     userRepository.save(entity);
 

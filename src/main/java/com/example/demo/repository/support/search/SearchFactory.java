@@ -3,6 +3,7 @@ package com.example.demo.repository.support.search;
 import com.example.demo.enums.SearchType;
 import com.example.demo.service.dto.SearchDTO;
 import com.querydsl.core.BooleanBuilder;
+import org.apache.commons.lang3.ObjectUtils;
 
 import java.util.Optional;
 
@@ -38,7 +39,7 @@ public final class SearchFactory {
   }
 
   public BooleanBuilder getSearch() {
-    if (search == null) return new BooleanBuilder();
-    return this.search.getSearch();
+    if (ObjectUtils.isEmpty(search)) return new BooleanBuilder();
+    return search.getSearch();
   }
 }

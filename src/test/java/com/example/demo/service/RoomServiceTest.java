@@ -2,12 +2,13 @@ package com.example.demo.service;
 
 import com.example.demo.domain.Room;
 import com.example.demo.domain.User;
+import com.example.demo.enums.DealType;
+import com.example.demo.enums.RoomType;
+import com.example.demo.enums.SearchType;
 import com.example.demo.mock.RoomMock;
 import com.example.demo.mock.UserMock;
 import com.example.demo.repository.RoomRepository;
-import com.example.demo.service.dto.PageDTO;
-import com.example.demo.service.dto.RoomDTO;
-import com.example.demo.service.dto.RoomInfo;
+import com.example.demo.service.dto.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,6 +21,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 
 import java.util.List;
 import java.util.Optional;
@@ -158,5 +160,88 @@ class RoomServiceTest {
     Assertions.assertEquals(mock.getName(), entity.getName());
     Assertions.assertEquals(mock.getType(), entity.getType());
     Assertions.assertEquals(mock.getDealSet().size(), entity.getDealSet().size());
+  }
+
+  @Test
+  void getAllRoomList_RoomType() {
+
+    PageImpl<RoomInfoDTO> pageMocks = RoomMock.getPageMocks();
+
+    BDDMockito.given(roomRepository.findByAll(any(), any())).willReturn(pageMocks);
+
+    SearchDTO dto = SearchDTO.builder().roomType(RoomType.ONE).type(SearchType.ROOM).build();
+
+    Page<RoomInfoDTO> pages = roomService.getAllRoomList(dto);
+
+    List<RoomInfoDTO> entities = pages.getContent();
+
+    List<RoomInfoDTO> mocks = pageMocks.getContent();
+
+    Assertions.assertEquals(mocks.size(), entities.size());
+
+    RoomInfoDTO mock = mocks.get(0);
+
+    RoomInfoDTO entity = entities.get(0);
+
+    Assertions.assertEquals(mock.getId(), entity.getId());
+    Assertions.assertEquals(mock.getName(), entity.getName());
+    Assertions.assertEquals(mock.getType(), entity.getType());
+    Assertions.assertEquals(mock.getDealList().size(), entity.getDealList().size());
+  }
+
+  @Test
+  void getAllRoomList_DealType() {
+
+    PageImpl<RoomInfoDTO> pageMocks = RoomMock.getPageMocks();
+
+    BDDMockito.given(roomRepository.findByAll(any(), any())).willReturn(pageMocks);
+
+    SearchDTO dto =
+        SearchDTO.builder().dealType(DealType.CHARTER_RENT).type(SearchType.DEAL).build();
+
+    Page<RoomInfoDTO> pages = roomService.getAllRoomList(dto);
+
+    List<RoomInfoDTO> entities = pages.getContent();
+
+    List<RoomInfoDTO> mocks = pageMocks.getContent();
+
+    Assertions.assertEquals(mocks.size(), entities.size());
+
+    RoomInfoDTO mock = mocks.get(0);
+
+    RoomInfoDTO entity = entities.get(0);
+
+    Assertions.assertEquals(mock.getId(), entity.getId());
+    Assertions.assertEquals(mock.getName(), entity.getName());
+    Assertions.assertEquals(mock.getType(), entity.getType());
+    Assertions.assertEquals(mock.getDealList().size(), entity.getDealList().size());
+  }
+
+  @Test
+  void getAllRoomList_Deposit() {
+
+    PageImpl<RoomInfoDTO> pageMocks = RoomMock.getPageMocks();
+
+    BDDMockito.given(roomRepository.findByAll(any(), any())).willReturn(pageMocks);
+
+    SearchDTO dto =
+            SearchDTO.builder().startDeposit(5000).endDeposit(5000).type(SearchType.DEPOSIT).build();
+
+    Page<RoomInfoDTO> pages = roomService.getAllRoomList(dto);
+
+    List<RoomInfoDTO> entities = pages.getContent();
+
+    List<RoomInfoDTO> mocks = pageMocks.getContent();
+
+    Assertions.assertEquals(mocks.size(), entities.size());
+
+    RoomInfoDTO mock = mocks.get(0);
+
+    RoomInfoDTO entity = entities.get(0);
+
+    Assertions.assertEquals(mock.getId(), entity.getId());
+    Assertions.assertEquals(mock.getName(), entity.getName());
+    Assertions.assertEquals(mock.getType(), entity.getType());
+    Assertions.assertEquals(mock.getDealList().size(), entity.getDealList().size());
   }
 }

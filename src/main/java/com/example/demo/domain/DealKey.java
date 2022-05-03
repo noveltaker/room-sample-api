@@ -13,7 +13,7 @@ import java.io.Serializable;
 @Embeddable
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = {"roomId", "type"})
+@EqualsAndHashCode
 public class DealKey implements Serializable {
 
   private Long roomId;

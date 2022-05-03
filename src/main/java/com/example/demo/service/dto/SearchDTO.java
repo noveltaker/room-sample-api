@@ -5,6 +5,7 @@ import com.example.demo.enums.RoomType;
 import com.example.demo.enums.SearchType;
 import lombok.Builder;
 import lombok.Getter;
+import org.apache.commons.lang3.ObjectUtils;
 
 @Getter
 public class SearchDTO extends PageDTO {
@@ -34,5 +35,15 @@ public class SearchDTO extends PageDTO {
     this.dealType = dealType;
     this.startDeposit = startDeposit;
     this.endDeposit = endDeposit;
+  }
+
+  public Integer getStartDeposit() {
+    if (ObjectUtils.isEmpty(startDeposit)) return 0;
+    return startDeposit;
+  }
+
+  public Integer getEndDeposit() {
+    if (ObjectUtils.isEmpty(endDeposit)) return 0;
+    return endDeposit;
   }
 }

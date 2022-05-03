@@ -22,4 +22,9 @@ public class User {
 
   @Column(name = "hash_password", nullable = false)
   private String password;
+
+  @Transient
+  public void encodePassword(String password) {
+    this.password = password;
+  }
 }
