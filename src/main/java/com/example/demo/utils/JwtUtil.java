@@ -1,10 +1,12 @@
 package com.example.demo.utils;
 
+import com.example.demo.config.exception.TokenNotFoundException;
 import com.example.demo.config.security.SecurityConstants;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.apache.commons.lang3.StringUtils;
 
 import java.time.Duration;
 import java.util.Date;
@@ -23,8 +25,8 @@ public class JwtUtil {
   }
 
   private static void validationAuthorizationHeader(String header) {
-    if (null == header || "" == header || !header.startsWith(SecurityConstants.TOKEN_PREFIX)) {
-      throw new IllegalArgumentException();
+    if (StringUtils.isBlank(header) || !header.startsWith(SecurityConstants.TOKEN_PREFIX)) {
+      throw new TokenNotFoundException();
     }
   }
 

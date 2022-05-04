@@ -22,6 +22,6 @@ public class DomainUserService implements UserDetailsService, Authority {
             .findByEmail(username)
             .orElseThrow(() -> new UsernameNotFoundException("loginUser is " + username));
 
-    return new DomainUser(user, getGrantedAuthorityList());
+    return DomainUser.defaultBuilder().user(user).authorities(getGrantedAuthorityList()).build();
   }
 }

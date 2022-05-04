@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public enum AuthenticationExceptionType implements BaseEnum<String> {
-
   BadCredentialsException("비밀번호 불일치", "비밀번호 불일치"),
   UsernameNotFoundException("계정없음", "계정없음"),
   AccountExpiredException("계정만료", "계정만료"),

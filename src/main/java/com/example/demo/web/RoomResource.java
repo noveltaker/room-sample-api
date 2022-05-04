@@ -1,5 +1,6 @@
 package com.example.demo.web;
 
+import com.example.demo.config.security.SecurityUtil;
 import com.example.demo.domain.Room;
 import com.example.demo.service.RoomService;
 import com.example.demo.service.dto.*;
@@ -16,8 +17,7 @@ public class RoomResource {
 
   @PostMapping("/room")
   public Room createdRoom(@RequestBody RoomDTO dto) {
-    // user add
-    return roomService.createRoom(dto, null);
+    return roomService.createRoom(dto, SecurityUtil.getLoginUser());
   }
 
   @DeleteMapping("/room/{id}")
@@ -37,7 +37,7 @@ public class RoomResource {
 
   @GetMapping("/my-rooms")
   public Page<RoomInfo> getMyRooms(PageDTO dto) {
-    return roomService.getMyRoomList(null, dto);
+    return roomService.getMyRoomList(SecurityUtil.getLoginUserId(), dto);
   }
 
   @GetMapping("/rooms")

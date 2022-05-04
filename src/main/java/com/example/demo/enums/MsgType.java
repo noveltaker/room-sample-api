@@ -1,10 +1,14 @@
 package com.example.demo.enums;
 
 public enum MsgType implements BaseEnum<String> {
+  LoginUserNotFound("A002", "login user not found"),
   AUTHENTICATION_ERROR("A001", "authentication error"),
   INTERNAL_SERVER_ERROR("S001", "internal server error"),
   EMPTY_TOKEN_DOMAIN("S002", "token empty"),
+
   NOT_MATCH_TOKEN("S003", "token is not match"),
+
+  NONE_REQUEST_BODY("S004", "http request body is none error"),
   JWT_UNSUPPORTED("J001", "jwt not supported"),
   JWT_MALFORMED("J002", "jwt malformed"),
   JWT_EXPIRED("J003", "jwt expired"),

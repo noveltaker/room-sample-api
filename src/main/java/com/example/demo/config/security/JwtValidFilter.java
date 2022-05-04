@@ -41,9 +41,10 @@ public class JwtValidFilter extends OncePerRequestFilter implements Authority {
 
     String email = (String) claims.get("email");
 
-    User loginUser = User.builder().id(id).email(email).build();
+    User loginUser = User.builder().id(id).email(email).password("").build();
 
-    DomainUser domainUser = new DomainUser(loginUser, getGrantedAuthorityList());
+    DomainUser domainUser =
+        DomainUser.defaultBuilder().user(loginUser).authorities(getGrantedAuthorityList()).build();
 
     UsernamePasswordAuthenticationToken authorityUser =
         new UsernamePasswordAuthenticationToken(

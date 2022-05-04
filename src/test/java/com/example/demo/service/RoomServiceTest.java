@@ -225,7 +225,7 @@ class RoomServiceTest {
     BDDMockito.given(roomRepository.findByAll(any(), any())).willReturn(pageMocks);
 
     SearchDTO dto =
-            SearchDTO.builder().startDeposit(5000).endDeposit(5000).type(SearchType.DEPOSIT).build();
+        SearchDTO.builder().startDeposit(5000).endDeposit(5000).type(SearchType.DEPOSIT).build();
 
     Page<RoomInfoDTO> pages = roomService.getAllRoomList(dto);
 

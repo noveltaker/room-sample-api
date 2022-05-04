@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.config.exception.ReadyEmailException;
 import com.example.demo.domain.User;
 import com.example.demo.mock.UserMock;
 import com.example.demo.repository.UserRepository;
@@ -58,5 +59,22 @@ class UserServiceTest {
     Assertions.assertEquals(mock.getEmail(), entity.getEmail());
 
     Assertions.assertTrue(passwordEncoder.matches(mock.getPassword(), entity.getPassword()));
+  }
+
+  @Test
+  @DisplayName("회원 가입 로그인 로직 ReadyEmailException 테스트 케이스")
+  void signUp_ReadyEmailException() {
+
+    User mock = UserMock.getMock();
+
+    Boolean isUse = true;
+
+    BDDMockito.given(userRepository.existsByEmail(any())).willReturn(isUse);
+
+    BDDMockito.given(userRepository.save(any())).willReturn(mock);
+
+    UserDTO dto = UserMock.getMockDTO();
+
+    Assertions.assertThrows(ReadyEmailException.class, () -> userService.signUp(dto));
   }
 }
