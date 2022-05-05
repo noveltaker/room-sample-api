@@ -7,6 +7,7 @@ import com.example.demo.enums.RoomType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,14 +15,15 @@ import java.util.stream.Collectors;
 
 @Getter
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
 public class RoomDTO {
 
-  private final String name;
+  private String name;
 
-  private final RoomType type;
+  private RoomType type;
 
-  @Builder.Default private final Set<DealDTO> dealSet = new HashSet<>();
+  @Builder.Default private Set<DealDTO> dealSet = new HashSet<>();
 
   public Room toEntity(User user) {
     return Room.initBuilder().name(this.name).type(this.type).user(user).build();
