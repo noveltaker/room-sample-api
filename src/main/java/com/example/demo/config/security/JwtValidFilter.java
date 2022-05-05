@@ -18,7 +18,8 @@ import java.util.Set;
 
 public class JwtValidFilter extends OncePerRequestFilter implements Authority {
 
-  private final Set<String> skipUrls = Set.of("/login", "/sign-up");
+  private final Set<String> skipUrls =
+      Set.of("/login", "/sign-up", "/swagger-ui/**", "/swagger-resources/**", "/v3/**");
 
   private final AntPathMatcher pathMatcher = new AntPathMatcher();
 
@@ -57,6 +58,7 @@ public class JwtValidFilter extends OncePerRequestFilter implements Authority {
 
   @Override
   protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-    return skipUrls.stream().anyMatch(p -> pathMatcher.match(p, request.getRequestURI()));
+    return skipUrls.stream()
+        .anyMatch(pattern -> pathMatcher.match(pattern, request.getServletPath()));
   }
 }

@@ -4,6 +4,7 @@ import com.example.demo.config.security.SecurityUtil;
 import com.example.demo.domain.Room;
 import com.example.demo.service.RoomService;
 import com.example.demo.service.dto.*;
+import com.example.demo.web.docs.RoomResourceDocs;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
-public class RoomResource {
+public class RoomResource implements RoomResourceDocs {
 
   private final RoomService roomService;
 
