@@ -80,7 +80,6 @@ class UserResourceTest {
                 MockMvcRequestBuilders.post("/sign-up")
                     .content(JsonUtil.convertObjectToJson(dto))
                     .contentType(MediaType.APPLICATION_JSON)
-                    .accept(MediaType.APPLICATION_JSON)
                     .characterEncoding("UTF-8"))
             .andDo(print());
 

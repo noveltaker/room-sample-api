@@ -59,6 +59,6 @@ public class JwtValidFilter extends OncePerRequestFilter implements Authority {
   @Override
   protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
     return skipUrls.stream()
-        .anyMatch(pattern -> pathMatcher.match(pattern, request.getServletPath()));
+        .anyMatch(pattern -> pathMatcher.match(pattern, request.getRequestURI()));
   }
 }

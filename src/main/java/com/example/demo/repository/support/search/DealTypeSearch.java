@@ -6,7 +6,7 @@ import com.querydsl.core.BooleanBuilder;
 
 import static com.example.demo.domain.QDeal.deal;
 
-public final class DealTypeSearch extends Search {
+public final class DealTypeSearch extends Search implements DealTypeMatcher {
 
   DealTypeSearch(SearchDTO searchDTO) {
     super(searchDTO);
@@ -21,7 +21,7 @@ public final class DealTypeSearch extends Search {
 
     DealType dealType = dto.getDealType();
 
-    if (!DealType.ALL.equals(dealType)) {
+    if (isNotAllType(dealType)) {
       builder.and(deal.id.type.eq(dealType));
     }
 

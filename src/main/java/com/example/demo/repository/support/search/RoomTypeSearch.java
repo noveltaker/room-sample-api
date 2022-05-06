@@ -6,7 +6,7 @@ import com.querydsl.core.BooleanBuilder;
 
 import static com.example.demo.domain.QRoom.room;
 
-public final class RoomTypeSearch extends Search {
+public final class RoomTypeSearch extends Search implements RoomTypeMatcher {
 
   RoomTypeSearch(SearchDTO dto) {
     super(dto);
@@ -21,7 +21,7 @@ public final class RoomTypeSearch extends Search {
 
     RoomType roomType = dto.getRoomType();
 
-    if (!RoomType.ALL.equals(roomType)) {
+    if (isNotAllType(roomType)) {
       builder.and(room.type.eq(roomType));
     }
 

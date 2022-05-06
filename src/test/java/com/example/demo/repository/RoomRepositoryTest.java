@@ -228,6 +228,29 @@ class RoomRepositoryTest {
       Assertions.assertEquals(mock.getType(), entity.getType());
       Assertions.assertEquals(mock.getDealSet().size(), entity.getDealList().size());
     }
+
+    @Test
+    @DisplayName("none type test case")
+    void findByAll_None() {
+      PageRequest pageable = PageRequest.of(0, 10);
+
+      SearchDTO dto = SearchDTO.builder().type(SearchType.NONE).build();
+
+      SearchFactory builder = new SearchFactory(dto).init();
+
+      Page<RoomInfoDTO> entities = roomRepository.findByAll(pageable, builder);
+
+      List<RoomInfoDTO> content = entities.getContent();
+
+      Assertions.assertEquals(content.size(), 1);
+
+      RoomInfoDTO entity = content.get(0);
+
+      Assertions.assertEquals(mock.getId(), entity.getId());
+      Assertions.assertEquals(mock.getName(), entity.getName());
+      Assertions.assertEquals(mock.getType(), entity.getType());
+      Assertions.assertEquals(mock.getDealSet().size(), entity.getDealList().size());
+    }
   }
 
   @Nested

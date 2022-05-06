@@ -100,7 +100,6 @@ class RoomResourceTest {
                     .header(HttpHeaders.AUTHORIZATION, SecurityConstants.TOKEN_PREFIX + token)
                     .content(JsonUtil.convertObjectToJson(dto))
                     .contentType(MediaType.APPLICATION_JSON)
-                    .accept(MediaType.APPLICATION_JSON)
                     .characterEncoding("UTF-8"))
             .andDo(print());
 
@@ -126,7 +125,6 @@ class RoomResourceTest {
                 MockMvcRequestBuilders.delete("/api/room/" + id)
                     .header(HttpHeaders.AUTHORIZATION, SecurityConstants.TOKEN_PREFIX + token)
                     .contentType(MediaType.APPLICATION_JSON)
-                    .accept(MediaType.APPLICATION_JSON)
                     .characterEncoding("UTF-8"))
             .andDo(print());
 
@@ -149,7 +147,6 @@ class RoomResourceTest {
                 MockMvcRequestBuilders.get("/api/room/" + id)
                     .header(HttpHeaders.AUTHORIZATION, SecurityConstants.TOKEN_PREFIX + token)
                     .contentType(MediaType.APPLICATION_JSON)
-                    .accept(MediaType.APPLICATION_JSON)
                     .characterEncoding("UTF-8"))
             .andDo(print());
 
@@ -179,7 +176,6 @@ class RoomResourceTest {
                     .header(HttpHeaders.AUTHORIZATION, SecurityConstants.TOKEN_PREFIX + token)
                     .content(JsonUtil.convertObjectToJson(dto))
                     .contentType(MediaType.APPLICATION_JSON)
-                    .accept(MediaType.APPLICATION_JSON)
                     .characterEncoding("UTF-8"))
             .andDo(print());
 
@@ -210,7 +206,6 @@ class RoomResourceTest {
                     .param("page", dto.getPage().toString())
                     .param("size", dto.getSize().toString())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .accept(MediaType.APPLICATION_JSON)
                     .characterEncoding("UTF-8"))
             .andDo(print());
 
@@ -247,7 +242,6 @@ class RoomResourceTest {
                     .param("roomType", dto.getRoomType().name())
                     .param("type", dto.getType().name())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .accept(MediaType.APPLICATION_JSON)
                     .characterEncoding("UTF-8"))
             .andDo(print());
 

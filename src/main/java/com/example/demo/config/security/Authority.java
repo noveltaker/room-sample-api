@@ -5,7 +5,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.List;
 
-interface Authority {
+public interface Authority {
 
   default List<GrantedAuthority> getGrantedAuthorityList() {
     return List.of(new SimpleGrantedAuthority(SecurityConstants.ROLE_USER));

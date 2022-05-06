@@ -5,8 +5,10 @@ import com.example.demo.domain.DealKey;
 import com.example.demo.domain.Room;
 import com.example.demo.enums.DealType;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class DealDTO {

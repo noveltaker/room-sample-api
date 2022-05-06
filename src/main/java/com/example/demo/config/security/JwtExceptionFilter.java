@@ -1,5 +1,6 @@
 package com.example.demo.config.security;
 
+import com.example.demo.config.exception.NotFoundException;
 import com.example.demo.enums.MsgType;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
@@ -37,6 +38,9 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
     } catch (SignatureException e) {
       // JWT의 기존 서명을 확인하지 못했을 때
       createErrorMessage(HttpStatus.GONE, response, e, MsgType.JWT_SIGNATURE);
+    } catch (NotFoundException e) {
+      // CustomException Catch
+      createErrorMessage(HttpStatus.INTERNAL_SERVER_ERROR, response, e, e.getMsgType());
     } catch (Exception e) {
       createErrorMessage(
           HttpStatus.INTERNAL_SERVER_ERROR, response, e, MsgType.INTERNAL_SERVER_ERROR);
