@@ -1,9 +1,9 @@
 package com.example.demo.repository.support;
 
 import com.example.demo.domain.Room;
-import com.example.demo.repository.support.search.SearchFactory;
 import com.example.demo.service.dto.DealInfoDTO;
 import com.example.demo.service.dto.RoomInfoDTO;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -31,14 +31,14 @@ public class RoomSupportImpl extends QuerydslRepositorySupport implements RoomSu
   }
 
   @Override
-  public Page<RoomInfoDTO> findByAll(Pageable pageable, SearchFactory factory) {
+  public Page<RoomInfoDTO> findByAll(Pageable pageable, BooleanBuilder booleanBuilder) {
 
     JPAQuery<Room> query =
         jpaQueryFactory
             .selectFrom(room)
             .innerJoin(room.user, user)
             .leftJoin(room.dealSet, deal)
-            .where(factory.getSearch());
+            .where(booleanBuilder);
 
     List<RoomInfoDTO> result =
         query

@@ -7,8 +7,8 @@ import com.example.demo.domain.Room;
 import com.example.demo.domain.User;
 import com.example.demo.enums.MsgType;
 import com.example.demo.repository.RoomRepository;
-import com.example.demo.repository.support.search.SearchFactory;
 import com.example.demo.service.dto.*;
+import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -86,7 +86,9 @@ public class RoomServiceImpl implements RoomService {
   @Override
   @Transactional(rollbackFor = Exception.class, readOnly = true)
   public Page<RoomInfoDTO> getAllRoomList(SearchDTO dto) {
-    SearchFactory factory = new SearchFactory(dto).init();
-    return roomRepository.findByAll(dto.getPageRequest(), factory);
+
+    BooleanBuilder searchTypeBooleanBuilder = dto.getType().getSearchTypeBooleanBuilder(dto);
+
+    return roomRepository.findByAll(dto.getPageRequest(), searchTypeBooleanBuilder);
   }
 }

@@ -8,7 +8,7 @@ import static com.example.demo.domain.QRoom.room;
 
 public final class RoomTypeSearch extends Search implements RoomTypeMatcher {
 
-  RoomTypeSearch(SearchDTO dto) {
+  public RoomTypeSearch(SearchDTO dto) {
     super(dto);
   }
 

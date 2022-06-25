@@ -7,7 +7,7 @@ import static com.example.demo.domain.QDeal.deal;
 
 public final class DepositSearch extends Search implements DepositSearchMatcher {
 
-  DepositSearch(SearchDTO searchDTO) {
+  public DepositSearch(SearchDTO searchDTO) {
     super(searchDTO);
   }
 

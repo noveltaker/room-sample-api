@@ -8,7 +8,7 @@ import static com.example.demo.domain.QDeal.deal;
 
 public final class DealTypeSearch extends Search implements DealTypeMatcher {
 
-  DealTypeSearch(SearchDTO searchDTO) {
+  public DealTypeSearch(SearchDTO searchDTO) {
     super(searchDTO);
   }
 

@@ -1,5 +1,6 @@
 package com.example.demo.service.dto;
 
+import com.example.demo.config.exception.EmptySearchTypeException;
 import com.example.demo.enums.DealType;
 import com.example.demo.enums.RoomType;
 import com.example.demo.enums.SearchType;
@@ -45,5 +46,14 @@ public class SearchDTO extends PageDTO {
   public Integer getEndDeposit() {
     if (ObjectUtils.isEmpty(endDeposit)) return 0;
     return endDeposit;
+  }
+
+  public SearchType getType() {
+
+    if (null == this.type) {
+      throw new EmptySearchTypeException();
+    }
+
+    return type;
   }
 }
