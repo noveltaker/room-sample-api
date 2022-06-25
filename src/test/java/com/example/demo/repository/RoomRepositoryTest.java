@@ -1,6 +1,7 @@
 package com.example.demo.repository;
 
 import com.example.demo.config.QueryDslConfiguration;
+import com.example.demo.config.exception.EmptySearchTypeException;
 import com.example.demo.domain.Room;
 import com.example.demo.domain.User;
 import com.example.demo.enums.DealType;
@@ -9,11 +10,11 @@ import com.example.demo.enums.SearchType;
 import com.example.demo.mock.DealMock;
 import com.example.demo.mock.RoomMock;
 import com.example.demo.mock.UserMock;
-import com.example.demo.repository.support.search.SearchFactory;
 import com.example.demo.service.dto.RoomDTO;
 import com.example.demo.service.dto.RoomInfo;
 import com.example.demo.service.dto.RoomInfoDTO;
 import com.example.demo.service.dto.SearchDTO;
+import com.querydsl.core.BooleanBuilder;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 @DataJpaTest
 @ExtendWith(SpringExtension.class)
@@ -59,9 +61,6 @@ class RoomRepositoryTest {
 
       roomRepository.flush();
 
-      org.assertj.core.api.Assertions.assertThat(mock).isEqualTo(entity);
-
-      Assertions.assertEquals(mock.getId(), entity.getId());
       Assertions.assertEquals(mock.getName(), entity.getName());
       Assertions.assertEquals(mock.getType(), entity.getType());
       Assertions.assertEquals(mock.getUser(), entity.getUser());
@@ -164,7 +163,7 @@ class RoomRepositoryTest {
 
       SearchDTO dto = SearchDTO.builder().roomType(RoomType.ONE).type(SearchType.ROOM).build();
 
-      SearchFactory builder = new SearchFactory(dto).init();
+      BooleanBuilder builder = dto.getType().getSearchTypeBooleanBuilder(dto);
 
       Page<RoomInfoDTO> entities = roomRepository.findByAll(pageable, builder);
 
@@ -188,7 +187,7 @@ class RoomRepositoryTest {
       SearchDTO dto =
           SearchDTO.builder().dealType(DealType.CHARTER_RENT).type(SearchType.DEAL).build();
 
-      SearchFactory builder = new SearchFactory(dto).init();
+      BooleanBuilder builder = dto.getType().getSearchTypeBooleanBuilder(dto);
 
       Page<RoomInfoDTO> entities = roomRepository.findByAll(pageable, builder);
 
@@ -213,7 +212,7 @@ class RoomRepositoryTest {
       SearchDTO dto =
           SearchDTO.builder().startDeposit(5000).endDeposit(5000).type(SearchType.DEPOSIT).build();
 
-      SearchFactory builder = new SearchFactory(dto).init();
+      BooleanBuilder builder = dto.getType().getSearchTypeBooleanBuilder(dto);
 
       Page<RoomInfoDTO> entities = roomRepository.findByAll(pageable, builder);
 
@@ -230,26 +229,18 @@ class RoomRepositoryTest {
     }
 
     @Test
-    @DisplayName("none type test case")
+    @DisplayName("Search Type Enum 이 null 인 테스트 케이스")
     void findByAll_None() {
       PageRequest pageable = PageRequest.of(0, 10);
 
-      SearchDTO dto = SearchDTO.builder().type(SearchType.NONE).build();
+      SearchDTO dto = SearchDTO.builder().type(null).build();
 
-      SearchFactory builder = new SearchFactory(dto).init();
-
-      Page<RoomInfoDTO> entities = roomRepository.findByAll(pageable, builder);
-
-      List<RoomInfoDTO> content = entities.getContent();
-
-      Assertions.assertEquals(content.size(), 1);
-
-      RoomInfoDTO entity = content.get(0);
-
-      Assertions.assertEquals(mock.getId(), entity.getId());
-      Assertions.assertEquals(mock.getName(), entity.getName());
-      Assertions.assertEquals(mock.getType(), entity.getType());
-      Assertions.assertEquals(mock.getDealSet().size(), entity.getDealList().size());
+      // 예외 체크 테스트 로직
+      Assertions.assertThrows(
+          EmptySearchTypeException.class,
+          () -> {
+            dto.getType().getSearchTypeBooleanBuilder(dto);
+          });
     }
   }
 
